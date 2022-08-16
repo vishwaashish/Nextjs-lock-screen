@@ -1,0 +1,38 @@
+:root {
+  --clockFontFamily: "Donegal One", serif;
+  --clockFontSize: calc(2em + 1vmin);
+  --clockFontSizeType: calc(0.3em + 1vmin);
+}
+
+* {
+  box-sizing: border-box;
+  line-height: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  margin: 0;
+  line-height: 1.3;
+  font-size: calc(0.8em + 0.6vmin);
+  color: #fffffe;
+  scroll-behavior: smooth;
+  text-rendering: geometricPrecision, optimizeLegibility, optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media screen {
+}
+
+/* @media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: black;
+  }
+} */
