@@ -1,7 +1,12 @@
 module.exports = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["localhost", "picsum.photos"],
+    domains: [
+      "localhost",
+      "picsum.photos",
+      "images.pexels",
+      "technotaught.com",
+    ],
   },
 };

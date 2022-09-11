@@ -1,37 +1,57 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import theme from "../assets/mui";
-import CurrentStatus from "../components/currentStatus";
+import { useMemo, useState } from "react";
+import background1 from "../assets/images/1.jpg";
+import background10 from "../assets/images/10.jpg";
+import background11 from "../assets/images/11.jpg";
+import background12 from "../assets/images/12.jpg";
+import background13 from "../assets/images/13.jpg";
+import background14 from "../assets/images/14.jpg";
+import background2 from "../assets/images/2.jpg";
+import background3 from "../assets/images/3.jpg";
+import background4 from "../assets/images/4.jpg";
+import background5 from "../assets/images/5.jpg";
+import background6 from "../assets/images/6.jpg";
+import background7 from "../assets/images/7.jpg";
+import background8 from "../assets/images/8.jpg";
+import background9 from "../assets/images/9.jpg";
+import Clock from "../components/Clock";
 import styles from "../styles/Home.module.css";
-import { ThemeProvider } from "@mui/material/styles";
 
-export default function Home({ allImages }) {
-  // console.log("🚀 ~ file: index.js ~ line 6 ~ Home ~ props", allImages);
-  const defaultImage = {
-    id: "1001",
-    author: "Danielle MacInnes",
-    width: 5616,
-    height: 3744,
-    url: "https://unsplash.com/photos/1DkWWN1dr-s",
-    download_url: "https://picsum.photos/id/1001/5616/3744",
-  };
-  const [image, setImage] = useState((val) => {
-    if (!!val) {
-      return val;
-    } else {
-      return defaultImage;
-    }
+export default function Home() {
+  const allBackgroundImages = useMemo(
+    () => [
+      background1,
+      background2,
+      background3,
+      background4,
+      background5,
+      background6,
+      background7,
+      background8,
+      background9,
+      background10,
+      background11,
+      background12,
+      background13,
+      background14,
+    ],
+    []
+  );
+
+  const [scroll, setScroll] = useState(() => {
+    const max = allBackgroundImages?.length;
+    const min = max - (max - 1);
+    return Math.floor(Math.random() * (max - min + 1));
   });
 
-  useEffect(() => {
-    setInterval(async () => {
-      const randomImage = Math.floor(Math.random() * (allImages?.length - 1));
-      const image = await allImages[randomImage];
-      setImage(image);
-    }, 5000);
-    // setImage(allImages[28]);
-  }, [allImages]);
+  const generate = () => {
+    const max = allBackgroundImages?.length;
+    const min = max - (max - 1);
+    setScroll(Math.floor(Math.random() * (max - min + 1)));
+  };
+
+  console.log(allBackgroundImages[scroll]?.src, background1);
 
   return (
     <div className={styles.container}>
@@ -39,46 +59,77 @@ export default function Home({ allImages }) {
         <title>Lock Screen</title>
         <meta name="description" content="Lock Screen" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        {/* <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Donegal+One&display=swap"
           rel="stylesheet"
-        />
+        /> */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        {/* <link
+          href="https://fonts.googleapis.com/css2?family=Donegal+One&display=swap"
+          rel="stylesheet"
+        /> */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <ThemeProvider theme={theme}>
-        <div className="container">
-          <div className={styles.fullImage}>
-            <Image
-              src={image?.download_url}
-              layout="fill"
-              loading="lazy"
-              objectFit="cover"
-              objectPosition="bottom center"
-              alt={image?.download_url}
-            />
-          </div>
-
-          <div className={styles.contentBoxShadow} />
-          <div className={styles.main}>
-            <CurrentStatus />
-            {/* <div className={styles.rightArea}>rightArea</div> */}
-          </div>
+      <div className="container">
+        <div className={styles.fullImage}>
+          {useMemo(
+            () => (
+              <Image
+                src={allBackgroundImages[scroll]?.src || background1.src}
+                alt="as"
+                layout="fill"
+                objectFit="cover"
+                objectPosition="bottom"
+                loading="lazy"
+                className={styles.imageEffect}
+              />
+            ),
+            [allBackgroundImages, scroll]
+          )}
         </div>
-      </ThemeProvider>
+        <div className={styles.contentBoxShadow}>
+          <Clock />
+        </div>
+      </div>
+      <div className={styles.footer}>
+        <a href="https://technotaught.com/" target="_blank" rel="noreferrer">
+          Ashishkumar Vishwakarma
+        </a>
+        <a component="button" onClick={generate}>
+          Generate
+        </a>
+      </div>
     </div>
   );
 }
 
-export async function getStaticProps(props) {
-  const res = await fetch("https://picsum.photos/v2/list");
-  const images = await res.json();
-
-  return {
-    props: {
-      allImages: images,
-    },
-  };
-}
+// const cstyles = {
+//   leftLink: {
+//     position: "absolute",
+//     bottom: 16,
+//     left: 16,
+//     fontSize: 13,
+//     fontFamily: "monospace",
+//     cursor: "pointer",
+//     "&:hover": {
+//       textDecoration: "underline",
+//       color:"red"
+//     },
+//   },
+//   rightLink: {
+//     position: "absolute",
+//     bottom: 16,
+//     cursor: "pointer",
+//     right: 16,
+//     fontSize: 13,
+//     fontFamily: "monospace",
+//     " :hover": {
+//       textDecoration: "underline",
+//       color:"red"
+//     },
+//   },
+// };
