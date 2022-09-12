@@ -84,10 +84,15 @@ export default function Home() {
     }
   }, [getFullscreenElement]);
 
-  const handleFullScreen = () => {
+  const handleFullScreen = useCallback(() => {
     toggleFullScreen();
+  }, [toggleFullScreen]);
+
+  const handleDoubleClick = (e) => {
+    if (e.detail === 2) {
+      return handleFullScreen();
+    }
   };
-  console.log(scroll);
 
   return (
     <div className={styles.container}>
@@ -100,41 +105,43 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="container">
-        <div className={styles.fullImage}>
-          {useMemo(
-            () => (
-              <Image
-                src={allBackgroundImages[scroll]?.src || background1.src}
-                alt="as"
-                layout="fill"
-                objectFit="cover"
-                objectPosition="bottom"
-                loading="lazy"
-                className={styles.imageEffect}
-              />
-            ),
-            [allBackgroundImages, scroll]
-          )}
+      <div onClick={handleDoubleClick}>
+        <div className="container">
+          <div className={styles.fullImage}>
+            {useMemo(
+              () => (
+                <Image
+                  src={allBackgroundImages[scroll]?.src || background1.src}
+                  alt="as"
+                  layout="fill"
+                  objectFit="cover"
+                  objectPosition="bottom"
+                  loading="lazy"
+                  className={styles.imageEffect}
+                />
+              ),
+              [allBackgroundImages, scroll]
+            )}
+          </div>
+          <div className={styles.contentBoxShadow}>
+            <Clock />
+          </div>
         </div>
-        <div className={styles.contentBoxShadow}>
-          <Clock />
+        <div className={styles.footer}>
+          <a href="https://technotaught.com/" target="_blank" rel="noreferrer">
+            Ashishkumar Vishwakarma
+          </a>
+          {/* <Image
+            src={expand}
+            width={20}
+            height={20}
+            alt="expand"
+            onClick={handleFullScreen}
+          /> */}
+          <a component="button" onClick={generate}>
+            Generate
+          </a>
         </div>
-      </div>
-      <div className={styles.footer}>
-        <a href="https://technotaught.com/" target="_blank" rel="noreferrer">
-          Ashishkumar Vishwakarma
-        </a>
-        <Image
-          src={expand}
-          width={20}
-          height={20}
-          alt="expand"
-          onClick={handleFullScreen}
-        />
-        <a component="button" onClick={generate}>
-          Generate
-        </a>
       </div>
     </div>
   );

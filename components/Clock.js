@@ -19,7 +19,7 @@ const getCurrentStatus = () => {
   }
 };
 
-const Clock = () => {
+const Clock = ({}) => {
   const [date, setDate] = useState({});
   const status = getCurrentStatus();
   const updateTime = useCallback(() => {
