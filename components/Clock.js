@@ -1,6 +1,8 @@
 import moment from "moment";
+import Image from "next/image";
 import React, { useCallback, useMemo, useState } from "react";
 import styles from "../styles/Clock.module.css";
+import expand from "../assets/images/expand.svg";
 
 const getCurrentStatus = () => {
   var currentHour = moment().format("HH");
