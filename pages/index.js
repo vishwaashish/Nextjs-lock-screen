@@ -51,7 +51,7 @@ export default function Home() {
     setScroll(Math.floor(Math.random() * (max - min + 1)));
   };
 
-  console.log(allBackgroundImages[scroll]?.src, background1);
+  console.log(allBackgroundImages[scroll]?.src, background2);
 
   return (
     <div className={styles.container}>
