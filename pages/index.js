@@ -15,29 +15,19 @@ import background6 from "../assets/images/6.jpg";
 import background7 from "../assets/images/7.jpg";
 import background8 from "../assets/images/8.jpg";
 import background9 from "../assets/images/9.jpg";
-import expand from "../assets/images/expand.svg";
 import Clock from "../components/Clock";
 import styles from "../styles/Home.module.css";
+import dynamic from 'next/dynamic';
 
-export default function Home() {
+const AnimatedCursor = dynamic(() => import('react-animated-cursor'), {
+  ssr: false,
+});
+
+export default function Home(props) {
+  console.log(props, "props")
   const allBackgroundImages = useMemo(
-    () => [
-      background1,
-      background2,
-      background3,
-      background4,
-      background5,
-      background6,
-      background7,
-      background8,
-      background9,
-      background10,
-      background11,
-      background12,
-      background13,
-      background14,
-    ],
-    []
+    () => props.imageList,
+    [props.imageList]
   );
 
   const [scroll, setScroll] = useState(() => {
@@ -88,13 +78,42 @@ export default function Home() {
     toggleFullScreen();
   }, [toggleFullScreen]);
 
-  const handleDoubleClick = (e) => {
-    if (e.detail === 2) {
-      return handleFullScreen();
-    }
-  };
+  // const handleDoubleClick = (e) => {
+  //   if (e.detail === 2) {
+  //     return handleFullScreen();
+  //   }
+  // };
 
-  return (
+
+
+  return (<>
+    <AnimatedCursor
+      innerSize={8}
+      outerSize={35}
+      innerScale={1}
+      outerScale={2}
+      outerAlpha={0}
+      hasBlendMode={true}
+      innerStyle={{
+        backgroundColor: '#fff'
+      }}
+      outerStyle={{
+        border: '2px solid #fff'
+      }}
+      clickables={[
+        'a',
+        'input[type="text"]',
+        'input[type="email"]',
+        'input[type="number"]',
+        'input[type="submit"]',
+        'input[type="image"]',
+        'label[for]',
+        'select',
+        'textarea',
+        'button',
+        '.link'
+      ]}
+    />
     <div className={styles.container}>
       <Head>
         <title>Lock Screen</title>
@@ -105,23 +124,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div onClick={handleDoubleClick}>
+      <div >
         <div className="container">
-          <div className={styles.fullImage}>
-            {useMemo(
-              () => (
-                <Image
-                  src={allBackgroundImages[scroll]?.src || background1.src}
-                  alt="as"
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="bottom"
-                  loading="lazy"
-                  className={styles.imageEffect}
-                />
-              ),
-              [allBackgroundImages, scroll]
-            )}
+          <div className={styles.fullImage} style={{ position: 'relative' }}>
+            <ImageComponent source={allBackgroundImages[scroll] || background1} />
           </div>
           <div className={styles.contentBoxShadow}>
             <Clock />
@@ -131,18 +137,55 @@ export default function Home() {
           <a href="https://technotaught.com/" target="_blank" rel="noreferrer">
             Ashishkumar Vishwakarma
           </a>
-          {/* <Image
-            src={expand}
-            width={20}
-            height={20}
-            alt="expand"
-            onClick={handleFullScreen}
-          /> */}
+          <a component="button" onClick={handleFullScreen}>
+            Zoom
+          </a>
           <a component="button" onClick={generate}>
             Generate
           </a>
         </div>
       </div>
     </div>
+  </>
   );
+}
+
+
+const ImageComponent = ({ source }) => {
+  const newSrc = useMemo(() => source, [source])
+  console.log(newSrc)
+  return (<Image
+    src={newSrc.src}
+    alt="as"
+    layout="fill"
+    objectFit="cover"
+    objectPosition="bottom"
+    priority
+    quality={100}
+    className={styles.imageEffect}
+  />)
+}
+
+
+export const getStaticProps = () => {
+  return {
+    props: {
+      imageList: [
+        background1,
+        background2,
+        background3,
+        background4,
+        background5,
+        background6,
+        background7,
+        background8,
+        background9,
+        background10,
+        background11,
+        background12,
+        background13,
+        background14,
+      ]
+    }
+  }
 }

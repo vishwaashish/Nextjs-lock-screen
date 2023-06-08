@@ -13,7 +13,9 @@
     "moment": "^2.29.4",
     "next": "12.2.5",
     "react": "18.2.0",
+    "react-animated-cursor": "^2.7.0",
     "react-dom": "18.2.0",
+    "sharp": "^0.32.1",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
