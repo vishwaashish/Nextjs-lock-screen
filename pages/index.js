@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Head from "next/head";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -17,23 +18,43 @@ import background8 from "../assets/images/8.jpg";
 import background9 from "../assets/images/9.jpg";
 import Clock from "../components/Clock";
 import styles from "../styles/Home.module.css";
-import dynamic from 'next/dynamic';
 
 const AnimatedCursor = dynamic(() => import('react-animated-cursor'), {
   ssr: false,
 });
+function getRandomNumber(maxLength = 1) {
+  const max = maxLength;
+  const min = max - (max - 1);
+  return Math.floor(Math.random() * (max - min + 1))
+}
+export default function Home() {
 
-export default function Home(props) {
-  console.log(props, "props")
   const allBackgroundImages = useMemo(
-    () => props.imageList,
-    [props.imageList]
+    () => [
+      background1,
+      background2,
+      background3,
+      background4,
+      background5,
+      background6,
+      background7,
+      background8,
+      background9,
+      background10,
+      background11,
+      background12,
+      background13,
+      background14,
+    ],
+    []
   );
 
+  const imagesLength = allBackgroundImages?.length
+
+  const [loaded, setLoaded] = useState(false);
+  const [zoomIn, setZoomIn] = useState(false);
   const [scroll, setScroll] = useState(() => {
-    const max = allBackgroundImages?.length;
-    const min = max - (max - 1);
-    return Math.floor(Math.random() * (max - min + 1));
+    return getRandomNumber(imagesLength)
   });
 
   useEffect(() => {
@@ -51,11 +72,10 @@ export default function Home(props) {
     };
   }, [allBackgroundImages.length]);
 
-  const generate = () => {
-    const max = allBackgroundImages?.length;
-    const min = max - (max - 1);
-    setScroll(Math.floor(Math.random() * (max - min + 1)));
-  };
+  const generate = useCallback(() => {
+    setLoaded(true)
+    setScroll(getRandomNumber(imagesLength));
+  }, [imagesLength]);
 
   const getFullscreenElement = useCallback(() => {
     return (
@@ -69,8 +89,12 @@ export default function Home(props) {
   const toggleFullScreen = useCallback(() => {
     if (getFullscreenElement()) {
       document.exitFullscreen();
+      setZoomIn(false)
     } else {
-      document.documentElement.requestFullscreen().catch(console.log);
+      document.documentElement.requestFullscreen().then(() => {
+        setZoomIn(true)
+      })
+
     }
   }, [getFullscreenElement]);
 
@@ -83,6 +107,14 @@ export default function Home(props) {
   //     return handleFullScreen();
   //   }
   // };
+
+
+  const onLoadingComplete = useCallback((e) => {
+    setLoaded((val) => {
+      if (val) return false
+      return val
+    })
+  }, [])
 
 
 
@@ -102,16 +134,7 @@ export default function Home(props) {
       }}
       clickables={[
         'a',
-        'input[type="text"]',
-        'input[type="email"]',
-        'input[type="number"]',
-        'input[type="submit"]',
-        'input[type="image"]',
-        'label[for]',
-        'select',
-        'textarea',
         'button',
-        '.link'
       ]}
     />
     <div className={styles.container}>
@@ -127,21 +150,21 @@ export default function Home(props) {
       <div >
         <div className="container">
           <div className={styles.fullImage} style={{ position: 'relative' }}>
-            <ImageComponent source={allBackgroundImages[scroll] || background1} />
+            <ImageComponent source={allBackgroundImages[scroll] || background1} onLoadingComplete={onLoadingComplete} />
           </div>
           <div className={styles.contentBoxShadow}>
             <Clock />
           </div>
         </div>
         <div className={styles.footer}>
-          <a href="https://technotaught.com/" target="_blank" rel="noreferrer">
+          <a href="https://github.com/vishwaashish" target="_blank" rel="noreferrer">
             Ashishkumar Vishwakarma
           </a>
           <a component="button" onClick={handleFullScreen}>
-            Zoom
+            {`Zoom ${zoomIn ? "Out" : "In"}`}
           </a>
-          <a component="button" onClick={generate}>
-            Generate
+          <a component="button" className={loaded ? "hideDecoration" : ""} onClick={() => { !loaded && generate() }}>
+            {loaded ? "Loading..." : "Generate"}
           </a>
         </div>
       </div>
@@ -151,12 +174,12 @@ export default function Home(props) {
 }
 
 
-const ImageComponent = ({ source }) => {
-  const newSrc = useMemo(() => source, [source])
-  console.log(newSrc)
+const ImageComponent = ({ source, onLoadingComplete }) => {
+  const newSrc = useMemo(() => source.src, [source.src])
   return (<Image
-    src={newSrc.src}
-    alt="as"
+    onLoadingComplete={onLoadingComplete}
+    src={newSrc}
+    alt={"Background Image"}
     layout="fill"
     objectFit="cover"
     objectPosition="bottom"
@@ -166,26 +189,3 @@ const ImageComponent = ({ source }) => {
   />)
 }
 
-
-export const getStaticProps = () => {
-  return {
-    props: {
-      imageList: [
-        background1,
-        background2,
-        background3,
-        background4,
-        background5,
-        background6,
-        background7,
-        background8,
-        background9,
-        background10,
-        background11,
-        background12,
-        background13,
-        background14,
-      ]
-    }
-  }
-}
