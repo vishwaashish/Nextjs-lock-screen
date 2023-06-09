@@ -4,7 +4,7 @@
 
 `Lock Screen` is a single page [next.js](https://nextjs.org/) web application, just for knowledge purposes created by [Ashishkumar Vishwakarma](https://github.com/vishwaashish). 
 
-Live link =  [Lock Screen](https://lock-screen-11azyutgd-vishwaashish.vercel.app/) 
+Live link =  [Lock Screen](https://lock-screen-g8pd940x1-vishwaashish.vercel.app/)
 
 Everyone is welcome to use it. 
 
