@@ -43,3 +43,13 @@
   row-gap: 0.5rem;
   column-gap: 1rem;
 }
+
+.onZoom {
+  display: block;
+}
+
+@media (max-width: 576px) {
+  .onZoom {
+    display: none;
+  }
+}
