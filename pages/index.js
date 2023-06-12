@@ -72,10 +72,18 @@ export default function Home() {
     };
   }, [allBackgroundImages.length]);
 
+  const imgSource = useMemo(
+    () => allBackgroundImages[scroll].src || background1.src,
+    [allBackgroundImages, scroll]
+  );
+
   const generate = useCallback(() => {
+    if (loaded) {
+      return;
+    }
     setLoaded(true);
     setScroll(getRandomNumber(imagesLength));
-  }, [imagesLength]);
+  }, [imagesLength, loaded]);
 
   const getFullscreenElement = useCallback(() => {
     return (
@@ -151,7 +159,7 @@ export default function Home() {
               /> */}
               <Image
                 onLoadingComplete={onLoadingComplete}
-                src={allBackgroundImages[scroll].src || background1.src}
+                src={imgSource}
                 alt={"Background Image"}
                 layout="fill"
                 objectFit="cover"
@@ -185,9 +193,7 @@ export default function Home() {
             <a
               component="button"
               className={loaded ? "hideDecoration" : ""}
-              onClick={() => {
-                !loaded && generate();
-              }}
+              onClick={generate}
             >
               {loaded ? "Loading" : "Generate"}
             </a>
