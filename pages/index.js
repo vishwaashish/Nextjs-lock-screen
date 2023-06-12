@@ -160,11 +160,11 @@ export default function Home() {
           <a href="https://github.com/vishwaashish" target="_blank" rel="noreferrer">
             Ashishkumar Vishwakarma
           </a>
-          <a component="button" onClick={handleFullScreen}>
+          <a component="button" className={styles.onZoom} onClick={handleFullScreen}>
             {`Zoom ${zoomIn ? "Out" : "In"}`}
           </a>
           <a component="button" className={loaded ? "hideDecoration" : ""} onClick={() => { !loaded && generate() }}>
-            {loaded ? "Loading..." : "Generate"}
+            {loaded ? "Loading" : "Generate"}
           </a>
         </div>
       </div>
