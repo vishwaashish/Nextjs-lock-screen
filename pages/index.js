@@ -73,7 +73,7 @@ export default function Home() {
   }, [allBackgroundImages.length]);
 
   const imgSource = useMemo(
-    () => allBackgroundImages[scroll].src || background1.src,
+    () => allBackgroundImages[scroll]?.src || background1?.src,
     [allBackgroundImages, scroll]
   );
 
